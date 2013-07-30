@@ -1,7 +1,10 @@
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
+Builds/
 
 *.csproj
 *.unityproj
 *.sln
+*.exe
+*.dll
