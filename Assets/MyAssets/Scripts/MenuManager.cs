@@ -24,11 +24,9 @@ public class MenuManager : MonoBehaviour {
 
             GUILayout.BeginVertical();
             if (GUILayout.Button("Connect as Client")) {
-                //Network.Connect(ip, port);
                 mm.Connect(ip, port);
             }
             if (GUILayout.Button("Start Server")) {
-                //Network.InitializeServer(32, port, false);
                 mm.StartHost(32, port);
             }
             GUILayout.EndVertical();
