@@ -24,9 +24,11 @@ public class MenuManager : MonoBehaviour {
 
             GUILayout.BeginVertical();
             if (GUILayout.Button("Connect as Client")) {
+                Application.LoadLevel(1);
                 mm.Connect(ip, port);
             }
             if (GUILayout.Button("Start Server")) {
+                Application.LoadLevel(1);
                 mm.StartHost(32, port);
             }
             GUILayout.EndVertical();
@@ -44,6 +46,7 @@ public class MenuManager : MonoBehaviour {
             }
 
             if (GUILayout.Button("Disconnect")) {
+                Application.LoadLevel(0);
                 Network.Disconnect(200);
             }
         }
