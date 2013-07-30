@@ -1,64 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class MenuManager : MonoBehaviour {
 
-    public string CurrentMenu = "Main";
-
-    GameObject mm;
-    
-
-    string ServerName = "server name";
-    string playername = "Toto";
-    string serverip = "127.0.0.1";
+    MultiplayerManager mm;
+    string ip = "127.0.0.1";
+    int port = 20000;
 
     void Start() {
-        mm = GameObject.Find("NetworkObject");
+        mm = GameObject.Find("NetworkObject").GetComponent<MultiplayerManager>();
+    }
+
+    void Update() {
     }
 
     void OnGUI() {
-        if (CurrentMenu == "Main") {
-            MainMenu();
-        } else if (CurrentMenu == "Lobby") {
-            LobbyMenu();
-        } else if (CurrentMenu == "Host") {
-            HostMenu();
+        if (Network.peerType == NetworkPeerType.Disconnected) {
+            GUILayout.Label("Not Connected");
+
+            ip = GUILayout.TextField(ip, GUILayout.MinWidth(100));
+            port = Convert.ToInt32(GUILayout.TextField(port.ToString()));
+
+            GUILayout.BeginVertical();
+            if (GUILayout.Button("Connect as Client")) {
+                //Network.Connect(ip, port);
+                mm.Connect(ip, port);
+            }
+            if (GUILayout.Button("Start Server")) {
+                //Network.InitializeServer(32, port, false);
+                mm.StartHost(32, port);
+            }
+            GUILayout.EndVertical();
+        } else {
+            if (Network.peerType == NetworkPeerType.Connecting) {
+                GUILayout.Label("Connection status: Connecting");
+            } else if (Network.peerType == NetworkPeerType.Client) {
+                GUILayout.Label("Connection status: Client");
+                GUILayout.Label("Ping:" + Network.GetAveragePing(Network.connections[0]));
+            } else if (Network.peerType == NetworkPeerType.Server) {
+                GUILayout.Label("Connection status: Server");
+                if (Network.connections.Length >= 1) {
+                    GUILayout.Label("Ping to first player: " + Network.GetAveragePing(Network.connections[0]));
+                }
+            }
+
+            if (GUILayout.Button("Disconnect")) {
+                Network.Disconnect(200);
+            }
         }
-    }
-
-    void Navigate(string s) {
-        CurrentMenu = s;
-    }
-
-    void MainMenu() {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "Host Game")) {
-            Navigate("Host");
-        } else if (GUI.Button(new Rect(10, 20 + 50, 200, 50), "Join")) {
-            Navigate("Lobby");
-        }
-        GUI.Label(new Rect(10, 30 + 150, 200, 50), "Player name : ");
-        playername = GUI.TextField(new Rect(10, 200, 200, 20), playername);
-    }
-
-    void LobbyMenu() {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "Back")) {
-            Navigate("Main");
-        } else if (GUI.Button(new Rect(10, 20 + 100, 200, 50), "Start")) {
-            Network.Connect(serverip, 25000);
-        }
-        GUI.Label(new Rect(10, 30 + 150, 200, 50), "IP Server : ");
-        serverip = GUI.TextField(new Rect(10, 200, 200, 20), serverip);
-
-    }
-
-    void HostMenu() {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "Back")) {
-            Navigate("Main");
-        } else if (GUI.Button(new Rect(10, 20 + 50, 200, 50), "Start Server")) {
-            mm.GetComponent<MultiplayerManager>().StartServer(ServerName);
-        }
-
-        GUI.Label(new Rect(10, 200, 200, 50), "Name:");
-        ServerName = GUI.TextField(new Rect(100, 200, 200, 20), ServerName);
     }
 }
