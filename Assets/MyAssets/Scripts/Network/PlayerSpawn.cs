@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerSpawn : MonoBehaviour {
 
-    public Object player;
+    public Object playerObj;
 
     void OnServerInitialized() {
         Spawn();
@@ -14,7 +14,7 @@ public class PlayerSpawn : MonoBehaviour {
     }
 
     void Spawn() {
-        Object nw = Network.Instantiate(player, new Vector3(0.0f, 5.0f, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), 0);
+        Object nw = Network.Instantiate(playerObj, new Vector3(0.0f, 5.0f, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), 0);
     }
 
 
