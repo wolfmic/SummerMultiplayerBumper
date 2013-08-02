@@ -28,7 +28,9 @@ public class MenuManager : MonoBehaviour {
                 mm.Connect(ip, port);
             }
             if (GUILayout.Button("Start Server")) {
-                Application.LoadLevel(2);
+                if (Application.loadedLevel != 2) {
+                    Application.LoadLevel(2);
+                }
                 mm.StartHost(32, port);
             }
             GUILayout.EndVertical();
