@@ -17,7 +17,7 @@ public class PlayerSpawn : MonoBehaviour {
 
     void Spawn(NetworkPlayer pl) {
         int plnb = Convert.ToInt32(pl + "");
-        GameObject go = (GameObject)Network.Instantiate(playerObj, new Vector3(0.0f, 1.0f, 0.0f), new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), plnb);
+        GameObject go = (GameObject)Network.Instantiate(playerObj, new Vector3(0.0f, 1.0f, 0.0f), Quaternion.EulerAngles(0.0f, 0.0f, 0.0f), plnb);
         playerScripts.Add(go.GetComponent<PlayerControl>());
         go.networkView.RPC("SetPlayer", RPCMode.AllBuffered, pl);
     }

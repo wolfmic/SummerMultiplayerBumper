@@ -7,6 +7,7 @@ public class PlayerControl : MonoBehaviour {
     public GameObject thecam;
     GameObject pcam;
     public float velocity = 5.0f;
+    public float sens = 25.0f;
 
     void Awake() {
         if (!networkView.isMine) {
@@ -32,8 +33,11 @@ public class PlayerControl : MonoBehaviour {
 
         if (networkView.isMine) {
             Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
+            Vector3 mdir = new Vector3(0.0f, Input.GetAxis("Mouse X"), 0.0f);
             transform.Translate(dir * velocity * Time.deltaTime);
-            pcam.transform.position = transform.position + new Vector3(0.0f, 5.0f, 0.0f);
+            pcam.transform.position = transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+            transform.Rotate(mdir * Time.deltaTime * sens);
+            pcam.transform.rotation = transform.rotation;
         }
 
 	}
